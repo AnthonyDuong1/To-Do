@@ -1,0 +1,30 @@
+{
+  "name": "to-do",
+  "version": "1.0.0",
+  "description": "MERN stack to-do app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnthonyDuong1/To-Do.git"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnthonyDuong1/To-Do/issues"
+  },
+  "homepage": "https://github.com/AnthonyDuong1/To-Do#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongoose": "^8.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
