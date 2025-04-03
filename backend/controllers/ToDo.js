@@ -32,26 +32,29 @@ export const createToDo = async (req, res) => {
 export const deleteToDo = async (req, res) => {
     const { id } = req.params;
 
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({ success: false, message: "Invalid ToDo Id" });
+    }
+
     try{
         await ToDo.findByIdAndDelete(id);
-        res.status(200).json({ success: true, message: "Product Deleted" });
+        res.status(200).json({ success: true, message: "ToDo Deleted" });
     } catch(error){
         console.log("Error in deleting ToDo:", error.message);
-        res.status(404).json({ success: false, message: "Product not found" });
+        res.status(500).json({ success: false, message: "Server Error" });
     }
 };
 
 export const updateToDo = async (req, res) => {
     const { id } = req.params;
-
-    const product = req.body;
+    const todo = req.body;
 
     if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({ success: false, message: "Invalid Product Id" });
+        return res.status(404).json({ success: false, message: "Invalid ToDo Id" });
     }
 
     try{
-        const updatedToDo = await ToDo.findByIdAndUpdate(id, product, { new: true });
+        const updatedToDo = await ToDo.findByIdAndUpdate(id, todo, { new: true });
         res.status(200).json({ success: true, data: updatedToDo });
     } catch(error){
         res.status(500).json({ success: false, message: "Server Error" });

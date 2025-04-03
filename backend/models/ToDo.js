@@ -1,15 +1,15 @@
 import mongoose from "mongoose"
 
 const ToDoSchema = new mongoose.Schema({
-    Task:{
+    Task: {
         type: String,
         required: true
     },
-    Project:{
+    Project: {
         type:String,
         required: true
     },
-    Description:{
+    Description: {
         type: String,
         requred: true
     },
