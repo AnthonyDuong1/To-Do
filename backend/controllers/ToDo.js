@@ -13,6 +13,7 @@ export const getToDos = async (req, res) => {
 
 export const createToDo = async (req, res) => {
     const todo = req.body;
+    todo.UserId = req.UserId;
 
     if(!todo.Task || !todo.Project || !todo.Description){
         return res.status(400).json({ success: false, message: "Please provide all fields" });

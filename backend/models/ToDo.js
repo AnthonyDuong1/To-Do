@@ -13,6 +13,10 @@ const ToDoSchema = new mongoose.Schema({
         type: String,
         requred: true
     },
+    UserId: {
+        type: String,
+        required: true
+    },
 
 }, {
     timestamps: true
