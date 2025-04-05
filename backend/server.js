@@ -1,9 +1,10 @@
 import express from "express";
-import { connectDB } from "./config/db.js"
+import cors from "cors"
+import cookieParser from "cookie-parser"
 import ToDoRoutes from "./routes/ToDo.js"
 import UserRoutes from "./routes/User.js"
 import authRoutes from "./routes/auth.js"
-import cors from "cors"
+import { connectDB } from "./config/db.js"
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +16,7 @@ const corsOptions = {
 //Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 //Routes
 app.use("/api/ToDo", ToDoRoutes);
