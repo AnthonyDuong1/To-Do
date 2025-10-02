@@ -56,7 +56,7 @@ export const loginAuth = async (req, res) => {
                 httpOnly: true,
                 secure: false,          //Change once we get https working
                 sameSite: 'None',
-                maxAge: 1 * 24 * 60 * 60 * 1000   //days:hours:minutes:seconds:miliseconds
+                maxAge: 7 * 24 * 60 * 60 * 1000   //days:hours:minutes:seconds:miliseconds
             });
 
             res.status(200).json({ success: true, data: user, token: accessToken });
@@ -99,9 +99,9 @@ export const refreshAuth = async (req, res) => {
 };
 
 const generateAccessToken = (id) => {
-    return jwt.sign({id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "20s"});
+    return jwt.sign({id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1h"});
 };
 
 const generateRefreshToken = (id) => {
-    return jwt.sign({id}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "1d"});
+    return jwt.sign({id}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "7d"});
 }
