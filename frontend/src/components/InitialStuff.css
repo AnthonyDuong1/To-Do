@@ -1,10 +1,8 @@
-#root {
-  height: 100%;
-  width: 100%;
-  background-color: black;
-  margin: auto;
-  text-align: center;
-  display: flex;
+.InitialStuff{
+  background-color: #978249;
+  height: auto;
+  width: 30rem;
+  align-self: flex-start;
 }
 
 .logo {
