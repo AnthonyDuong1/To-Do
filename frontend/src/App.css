@@ -1,9 +1,8 @@
 #root {
   height: 100%;
   width: 100%;
-  background-color: black;
+  background-color: #2A2B2F;
   margin: auto;
-  text-align: center;
   display: flex;
 }
 

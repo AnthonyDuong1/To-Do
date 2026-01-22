@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import Sidebar from './components/HomeLayout/Sidebar.jsx'
-import Menu from './components/HomeLayout/Menu.jsx'
-import Projects from './components/HomeLayout/Projects.jsx'
+import Home from "./pages/Home.jsx"
+import Login from "./pages/Login.jsx"
 import InitialStuff from './components/InitialStuff.jsx'
 
 function App() {
@@ -10,9 +9,7 @@ function App() {
 
   return (
     <>
-      <Sidebar />
-      <Menu />
-      <Projects />
+      <Home />
     </>
   )
 }

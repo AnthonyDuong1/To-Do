@@ -23,7 +23,7 @@ export const createToDo = async (req, res) => {
 
     try{
         await newToDo.save();
-        res.status(201).json({ success: true, Data: newToDo });
+        res.status(201).json({ success: true, data: newToDo });
     } catch(error){
         console.log("Error in creating ToDo:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
@@ -61,3 +61,29 @@ export const updateToDo = async (req, res) => {
         res.status(500).json({ success: false, message: "Server Error" });
     }
 };
+
+export const getProjects = async (req, res) => {
+    const userID = req.UserId;
+
+    try{
+        const Projects = await ToDo.distinct("Project", { UserId: userID });
+        res.status(200).json({ success: true, data: Projects });
+    } catch(error){
+        console.log("Error in fetching Projects:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
+export const getTasks = async (req, res) => {
+    const userID = req.UserId;
+
+    try{
+        const taskObjectArray = await ToDo.find({ UserId: userID }, { _id: 0, Task: 1});
+        const Tasks = taskObjectArray.map(task => task.Task);
+        console.log(Tasks)
+        res.status(200).json({ success: true, data: Tasks });
+    } catch(error){
+        console.log("Error in fetching Tasks:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}

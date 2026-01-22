@@ -1,15 +1,14 @@
 import jwt from "jsonwebtoken"
 
 export const verifyJWT = async (req, res, next) => {
-    const authHeader = req.headers.Authorization || req.headers.authorization;
+    const cookies = req.cookies;
 
-    if(!authHeader || !authHeader.startsWith("Bearer ")){
+    if(!cookies || !cookies.accessJwt){
         return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    const token = authHeader.split(" ")[1];
     try{
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+        const decoded = jwt.verify(cookies.accessJwt, process.env.ACCESS_TOKEN_SECRET)
         req.UserId = decoded.id;
         next();
     } catch(error){

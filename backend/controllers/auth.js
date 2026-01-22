@@ -19,14 +19,21 @@ export const registerAuth = async (req, res) => {
         await newUser.save();
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
-        res.cookie("jwt", refreshToken, {
+        res.cookie("refreshJwt", refreshToken, {
             httpOnly: true,
-            secure: false,     //change once we get https working
-            sameSite: 'None',
+            secure: true,
+            sameSite: 'Lax',
             maxAge: 1 * 24 * 60 * 60 * 1000   //days:hours:minutes:seconds:miliseconds
         });
 
-        res.status(200).json({ success: true, data: newUser, token: accessToken });
+        res.cookie("accessJwt", accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Lax',
+            maxAge: 1 * 60 * 60 * 1000        //hours:minutes:seconds:miliseconds
+        });
+
+        res.status(200).json({ success: true });
     } catch(error){
         console.log("Error in registering user:", error);
         res.status(500).json({ success: false, message: "Server Error" });
@@ -52,14 +59,22 @@ export const loginAuth = async (req, res) => {
         if(isMatch){
             const accessToken = generateAccessToken(user.id);
             const refreshToken = generateRefreshToken(user.id);
-            res.cookie("jwt", refreshToken, {
+            
+            res.cookie("refreshJwt", refreshToken, {
                 httpOnly: true,
-                secure: false,          //Change once we get https working
-                sameSite: 'None',
+                secure: true, 
+                sameSite: 'Lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000   //days:hours:minutes:seconds:miliseconds
             });
 
-            res.status(200).json({ success: true, data: user, token: accessToken });
+            res.cookie("accessJwt", accessToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'Lax',
+                maxAge: 1 * 60 * 60 * 1000        //hours:minutes:seconds:miliseconds
+            });
+
+            res.status(200).json({ success: true });
         }else{
             res.status(400).json({ success: false, message: "Invalid Password" });
         }
@@ -72,15 +87,13 @@ export const loginAuth = async (req, res) => {
 export const refreshAuth = async (req, res) => {
     const cookies = req.cookies;
 
-    console.log("cookies");
-
-    if(!cookies || !cookies.jwt){
+    if(!cookies || !cookies.refreshJwt){
         console.log("Hi",cookies);
         return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
-    const refreshToken = cookies.jwt;
-
+    const refreshToken = cookies.refreshJwt;
+    console.log(refreshToken)
     try{
         console.log("Refreshing access token!");
         const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
@@ -91,11 +104,33 @@ export const refreshAuth = async (req, res) => {
         }
 
         const accessToken = generateAccessToken(decoded.id);
-        res.status(200).json({ success: true, token: accessToken });
+
+        res.cookie("accessJwt", accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Lax',
+            maxAge: 1 * 60 * 60 * 1000        //hours:minutes:seconds:miliseconds
+        });
+
+        res.status(200).json({ success: true });
     } catch(error){
         console.log("Error in verifying refresh token:", error);
         res.status(401).json({ success: false, message: "Forbidden" });
     }
+};
+
+export const logoutAuth = async (req, res) => {
+    const cookies = req.cookies;
+
+    if(!cookies || !(cookies.refreshJwt && cookies.accessJwt)){
+        console.log("Bad logout", cookies);
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    res.clearCookie("refreshJwt");
+    res.clearCookie("accessJwt");
+
+    res.status(200).json({ success: true });
 };
 
 const generateAccessToken = (id) => {

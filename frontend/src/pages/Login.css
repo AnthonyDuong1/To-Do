@@ -1,0 +1,13 @@
+.Login-Container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    background-color: #24262C;
+    width: 60%;
+    height: 60%;
+}
+
+.Submit-Button {
+    margin-top: 1rem;
+}
