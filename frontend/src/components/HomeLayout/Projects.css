@@ -116,6 +116,7 @@
 .Task {
     background-color: #292B31;
     align-self: center;
+    list-style-type: none;
     border-radius: 0.7rem;
     width: 93%;
     height: 11rem;

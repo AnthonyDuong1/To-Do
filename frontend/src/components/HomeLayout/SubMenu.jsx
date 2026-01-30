@@ -3,19 +3,17 @@ import Arrow_Button from "../../assets/Arrow.svg"
 
 function SubMenu({ category, refreshProject }){
     const [isOpen, setIsOpen] = useState(false);
-    const [projects, setProjects] = useState([]);
+    const [categoryData, setCategoryData] = useState([]);
     
     useEffect(() => {
-        let categoryList = document.getElementById(category);
         if(category == "Projects" || category == "Tasks"){
-            console.log("hi")
             fetch(`https://localhost:5201/api/ToDo/${category}`, {
                 method: "GET",
                 credentials: "include"
             })
             .then((response) => response.json())
             .then((json) => {
-                setProjects(json.data);
+                setCategoryData(json.data);
             });
         }
     }, [refreshProject]);
@@ -41,8 +39,8 @@ function SubMenu({ category, refreshProject }){
                     <img src={Arrow_Button} className="Arrow-Button" onClick={arrowClick}></img>
                 </div>
                 <ul className="Sub-Project-List" id={category}>
-                    {projects.map((project) => (
-                        <li key={project} className="Sub-Project-Name">{project}</li>
+                    {categoryData.map((data) => (
+                        <li key={data} className="Sub-Project-Name">{data}</li>
                     ))}
                     <li className="Sub-Project-Name">Test</li>
                 </ul>

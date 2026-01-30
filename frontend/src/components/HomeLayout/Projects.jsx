@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import './Projects.css'
 import Search from "../../assets/Search.svg"
 import Calendar from "../../assets/Calendar.svg"
@@ -6,6 +7,9 @@ import No_Bell from "../../assets/No-Notification-Bell.svg"
 import Profile_Picture from "../../assets/Profile-Picture.svg"
 
 function Projects() {
+    const [ToDoData, SetToDoData] = useState([])
+    const [InProgressData, SetInProgressData] = useState([])
+    const [DoneData, SetDoneData] = useState([])
 
     const clickView = (e) => {
 
@@ -18,6 +22,46 @@ function Projects() {
 
         target.classList.add("Views-Text-Selected");
     };
+
+    useEffect(() => {
+        fetch("https://localhost:5201/api/ToDo/GetToDo", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            if(json.success == true){
+                SetToDoData(json.data)
+            }
+        });
+
+        fetch("https://localhost:5201/api/ToDo/GetInProgress", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            if(json.success == true){
+                SetInProgressData(json.data)
+            }
+        });
+
+        fetch("https://localhost:5201/api/ToDo/GetDone", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            if(json.success == true){
+                SetDoneData(json.data)
+            }
+        });
+
+    }, [])
+
+    const testButton = () => {
+        console.log(InProgressData)
+    }
 
     return(
         <div className='Projects'>
@@ -37,7 +81,7 @@ function Projects() {
                 <div className='Tasks'>
                     <div className='Task-Category'>
                         <div className='Task-Category-Header'>
-                            <p className='Task-Category-Text'>To Do</p>
+                            <p className='Task-Category-Text Task-Category-To-Do'>To Do</p>
                             <p className='Task-Add-Button-Text'>Add New Task</p>
                             <button className='Task-Add-Button'>
                                 <svg width="18" height="18">
@@ -46,22 +90,17 @@ function Projects() {
                                 </svg>
                             </button>
                         </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
+                        {ToDoData.map((data) => (
+                            <li className='Task'>
+                            Task: {data.Task} <br /> <br />
+                            Project: {data.Project} <br /> <br />
+                            Description: {data.Description}
+                            </li>
+                        ))}
                     </div>
                     <div className='Task-Category Task-Category-Middle'>
                         <div className='Task-Category-Header'>
-                            <p className='Task-Category-Text'>In Progress</p>
+                            <p className='Task-Category-Text Task-Category-In-Progress'>In Progress</p>
                             <p className='Task-Add-Button-Text'>Add New Task</p>
                             <button className='Task-Add-Button'>
                                 <svg width="18" height="18">
@@ -70,23 +109,17 @@ function Projects() {
                                 </svg>
                             </button>
                         </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                            
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
+                        {InProgressData.map((data) => (
+                            <li className='Task'>
+                            Task: {data.Task} <br /> <br />
+                            Project: {data.Project} <br /> <br />
+                            Description: {data.Description}
+                            </li>
+                        ))}
                     </div>
                     <div className='Task-Category'>
                         <div className='Task-Category-Header'>
-                            <p className='Task-Category-Text'>Done</p>
+                            <p className='Task-Category-Text Task-Category-Done'>Done</p>
                             <p className='Task-Add-Button-Text'>Add New Task</p>
                             <button className='Task-Add-Button'>
                                 <svg width="18" height="18">
@@ -95,18 +128,13 @@ function Projects() {
                                 </svg>
                             </button>
                         </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
-                        <div className='Task'>
-                        
-                        </div>
+                        {DoneData.map((data) => (
+                            <li className='Task'>
+                            Task: {data.Task} <br /> <br />
+                            Project: {data.Project} <br /> <br />
+                            Description: {data.Description}
+                            </li>
+                        ))}
                     </div>
                 </div> 
             </div>

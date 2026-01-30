@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 #Specific
-vite.config.js
+/frontend/vite.config.js

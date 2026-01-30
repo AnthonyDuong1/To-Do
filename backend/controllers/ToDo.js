@@ -1,7 +1,7 @@
 import ToDo from "../models/ToDo.js"
 import mongoose from "mongoose"
 
-export const getToDos = async (req, res) => {
+/* export const getToDos = async (req, res) => {
     try{
         const ToDos = await ToDo.find({});
         res.status(200).json({ success: true, data: ToDos });
@@ -9,13 +9,13 @@ export const getToDos = async (req, res) => {
         console.log("Error in fetching ToDos:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
-}
+} */
 
 export const createToDo = async (req, res) => {
     const todo = req.body;
     todo.UserId = req.UserId;
 
-    if(!todo.Task || !todo.Project || !todo.Description){
+    if(!todo.Task || !todo.Project || !todo.Description || !todo.State){
         return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
 
@@ -84,6 +84,42 @@ export const getTasks = async (req, res) => {
         res.status(200).json({ success: true, data: Tasks });
     } catch(error){
         console.log("Error in fetching Tasks:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
+export const getToDo = async (req, res) => {
+    const userID = req.UserId;
+
+    try{
+        const Task = await ToDo.find({ UserId: userID, State: "To Do" }, { _id: 0, Task: 1, Project: 1, Description: 1 })
+        res.status(200).json({ success: true, data: Task });
+    } catch(error){
+        console.log("Error in fetching To Do Tasks", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
+export const getInProgress = async (req, res) => {
+    const userID = req.UserId;
+
+    try{
+        const Task = await ToDo.find({ UserId: userID, State: "In Progress" }, { _id: 0, Task: 1, Project: 1, Description: 1 })
+        res.status(200).json({ success: true, data: Task });
+    } catch(error){
+        console.log("Error in fetching To Do Tasks", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
+export const getDone = async (req, res) => {
+    const userID = req.UserId;
+
+    try{
+        const Task = await ToDo.find({ UserId: userID, State: "Done" }, { _id: 0, Task: 1, Project: 1, Description: 1 })
+        res.status(200).json({ success: true, data: Task });
+    } catch(error){
+        console.log("Error in fetching To Do Tasks", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
     }
 }

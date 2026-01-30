@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import './Sidebar.css'
 import Logo from '../../assets/Logo.png'
 import Icon1 from '../../assets/Icon1.svg'
@@ -10,6 +11,8 @@ import Logout from '../../assets/Logout.svg'
 
 function Sidebar() {
 
+    const navigate = useNavigate();
+
     const LogoutUser = () => {
         console.log("Logout")
 
@@ -18,7 +21,12 @@ function Sidebar() {
             credentials: "include",
         })
         .then((response) => response.json())
-        .then((json) => console.log(json));
+        .then((json) => {
+            if(json.success == true){
+                console.log(json)
+                navigate("/")
+            }
+        });
     }
 
     return(

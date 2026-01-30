@@ -1,10 +1,12 @@
 import express from "express";
-import { getToDos, createToDo, deleteToDo, updateToDo, getProjects, getTasks } from "../controllers/ToDo.js"
+import { getToDo, getInProgress, getDone, createToDo, deleteToDo, updateToDo, getProjects, getTasks } from "../controllers/ToDo.js"
 import { verifyJWT } from "../middleware/auth.js"
 
 const router = express.Router();
 
-router.get("/ToDos", verifyJWT, getToDos);
+router.get("/GetToDo", verifyJWT, getToDo);
+router.get("/GetInProgress", verifyJWT, getInProgress);
+router.get("/GetDone", verifyJWT, getDone);
 router.get("/Projects", verifyJWT, getProjects);
 router.get("/Tasks", verifyJWT, getTasks);
 router.post("/create", verifyJWT, createToDo);

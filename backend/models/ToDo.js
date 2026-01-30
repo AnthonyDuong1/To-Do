@@ -11,7 +11,11 @@ const ToDoSchema = new mongoose.Schema({
     },
     Description: {
         type: String,
-        requred: true
+        required: true
+    },
+    State: {
+        type: String,
+        required: true
     },
     UserId: {
         type: String,

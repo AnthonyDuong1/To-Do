@@ -1,6 +1,8 @@
-import "./Login.css"
+import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
 
     const LoginUser = () => {
         console.log("login")
@@ -15,7 +17,10 @@ function Login() {
             headers: { "Content-type": "application/json" },
         })
         .then((response) => response.json())
-        .then((json) => console.log(json));
+        .then((json) => {
+            console.log("json")
+            navigate("/Home")
+        });
     }
 
     const CheckRefresh = () => {
@@ -26,7 +31,12 @@ function Login() {
             credentials: "include",
         })
         .then((response) => response.json())
-        .then((json) => console.log(json));
+        .then((json) => {
+
+            if(json.success == true){
+                navigate("/Home")
+            }
+        });
     }
 
     return(
